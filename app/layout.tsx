@@ -2,8 +2,37 @@
 'use client';
 
 import './globals.css';
-import { PrivyProvider } from '@privy-io/react-auth';
+import { PrivyClientConfig, PrivyProvider } from '@privy-io/react-auth';
 import React, { useEffect, useState } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { createConfig, WagmiProvider } from '@privy-io/wagmi';
+import { flowMainnet } from 'viem/chains';
+import { http } from 'wagmi';
+
+const wagmiConfig = createConfig({
+  chains: [flowMainnet],
+  transports: {
+    [flowMainnet.id]: http(),
+  }
+});
+
+const privyConfig: PrivyClientConfig = {
+  appearance: {
+    theme: 'light',
+    accentColor: '#676FFF',
+    logo: 'https://cryptologos.cc/logos/flow-flow-logo.png', // Replace with your logo
+    walletList: [], // Disable wallets to force Flow wallet as smart wallet and avoid infinite recursion bug
+  },
+  embeddedWallets: {
+    createOnLogin: 'all-users',
+  },
+  loginMethodsAndOrder: {
+    primary: ['telegram', 'sms'],
+  },
+  // Flow EVM configuration
+  defaultChain: flowMainnet,
+  supportedChains: [flowMainnet],
+}
 
 export default function RootLayout({
   children,
@@ -12,6 +41,7 @@ export default function RootLayout({
 }) {
   // State to track app initialization
   const [isAppInitialized, setIsAppInitialized] = useState(false);
+  const queryClient = new QueryClient();
 
   useEffect(() => {
     // Ensure that the app ID exists before initializing Privy
@@ -30,67 +60,13 @@ export default function RootLayout({
         {isAppInitialized ? (
           <PrivyProvider
             appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID!}
-            config={{
-              appearance: {
-                theme: 'light',
-                accentColor: '#676FFF',
-                logo: 'https://cryptologos.cc/logos/flow-flow-logo.png', // Replace with your logo
-              },
-              embeddedWallets: {
-                createOnLogin: 'all-users',
-              },
-              // Flow EVM configuration
-              defaultChain: {
-                id: 747,
-                name: 'Flow',
-                network: 'flow',
-                nativeCurrency: {
-                  name: 'Flow',
-                  symbol: 'FLOW',
-                  decimals: 18,
-                },
-                rpcUrls: {
-                  default: {
-                    http: [
-                      'https://mainnet.evm.nodes.onflow.org',
-                    ],
-                  },
-                },
-                blockExplorers: {
-                  default: {
-                    name: 'Flowscan',
-                    url: 'https://evm.flowscan.io/',
-                  },
-                },
-              },
-              supportedChains: [
-                {
-                  id: 747,
-                  name: 'Flow',
-                  network: 'flow',
-                  nativeCurrency: {
-                    name: 'Flow',
-                    symbol: 'FLOW',
-                    decimals: 18,
-                  },
-                  rpcUrls: {
-                    default: {
-                      http: [
-                        'https://mainnet.evm.nodes.onflow.org',
-                      ],
-                    },
-                  },
-                  blockExplorers: {
-                    default: {
-                      name: 'Flowscan',
-                      url: 'https://evm.flowscan.io/',
-                    },
-                  },
-                },
-              ],
-            }}
+            config={privyConfig}
           >
-            {children}
+            <QueryClientProvider client={queryClient}>
+              <WagmiProvider config={wagmiConfig}>
+                {children}
+              </WagmiProvider>
+            </QueryClientProvider>
           </PrivyProvider>
         ) : (
           <div>
