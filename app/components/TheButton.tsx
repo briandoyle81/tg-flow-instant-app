@@ -17,7 +17,7 @@ export default function TheButton({ writeContract, awaitingResponse, setAwaiting
         writeContract({
             abi: clickToken.abi,
             address: clickToken.address,
-            functionName: 'mintTo',
+            functionName: 'mint',
             args: [account.address],
         });
     }
