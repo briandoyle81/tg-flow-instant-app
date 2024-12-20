@@ -11,7 +11,7 @@ type scoreBoardEntry = {
 
 interface TopTenDisplayProps {
     reloadScores: boolean;
-    setReloadScores: Function;
+    setReloadScores: (value: boolean) => void;
 }
 
 export default function TopTenDisplay({ reloadScores, setReloadScores }: TopTenDisplayProps) {

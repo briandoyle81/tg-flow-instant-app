@@ -1,10 +1,11 @@
-import { useAccount, } from 'wagmi';
+import { useAccount } from 'wagmi';
 import useContracts from '../contracts/contracts';
 
 interface theButtonProps {
+    // eslint-disable-next-line
     writeContract: Function;
     awaitingResponse: boolean;
-    setAwaitingResponse: Function;
+    setAwaitingResponse: (value: boolean) => void;
 }
 
 export default function TheButton({ writeContract, awaitingResponse, setAwaitingResponse }: theButtonProps) {

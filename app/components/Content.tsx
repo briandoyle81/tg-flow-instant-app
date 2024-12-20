@@ -3,7 +3,7 @@
 import { usePrivy } from '@privy-io/react-auth';
 import { useEffect, useState } from 'react';
 import TopTenDisplay from './TopTenDisplay';
-import { useAccount, useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
+import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import TheButton from './TheButton';
 
 export default function Content() {
