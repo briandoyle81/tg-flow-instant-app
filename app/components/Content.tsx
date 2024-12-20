@@ -10,8 +10,8 @@ export default function Content() {
     const [reload, setReload] = useState(false);
     const [awaitingResponse, setAwaitingResponse] = useState(false);
 
-    const { ready, authenticated, login, logout, user } = usePrivy();
-    const account = useAccount();
+    const { authenticated, } = usePrivy();
+
     const { data, writeContract, error: writeError } = useWriteContract();
 
     const { data: receipt, error: receiptError } = useWaitForTransactionReceipt({

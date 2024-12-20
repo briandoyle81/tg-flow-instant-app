@@ -1,6 +1,5 @@
 import { useAccount, } from 'wagmi';
 import useContracts from '../contracts/contracts';
-import { useEffect, useState } from 'react';
 
 interface theButtonProps {
     writeContract: Function;

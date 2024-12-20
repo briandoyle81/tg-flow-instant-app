@@ -32,11 +32,9 @@ export default function TopTenDisplay({ reloadScores, setReloadScores }: TopTenD
 
     useEffect(() => {
         if (scoresData) {
-            let sortedScores = scoresData as scoreBoardEntry[];
+            const sortedScores = scoresData as scoreBoardEntry[];
             // Sort scores in descending order
-            sortedScores.sort((a: any, b: any) => {
-                return b.clicks - a.clicks;
-            });
+            sortedScores.sort((a, b) => Number(b.value) - Number(a.value));
 
             setScores(sortedScores);
         }
@@ -59,9 +57,9 @@ export default function TopTenDisplay({ reloadScores, setReloadScores }: TopTenD
             return <ol><li>Loading...</li></ol>;
         }
         // Only display the top 10 scores.  If the user is in the top 10, bold the item with their score.  If not, show it at the bottom with their ranking number
-        let topTen = scores.length > 10 ? scores.slice(0, 10) : scores;
+        const topTen = scores.length > 10 ? scores.slice(0, 10) : scores;
         // myRank is my address's position in the array of scores, +1.  If it's not present, my rank is the length of the array
-        let myRank = scores.findIndex((entry) => entry.user === account?.address) + 1 || scores.length + 1;
+        const myRank = scores.findIndex((entry) => entry.user === account?.address) + 1 || scores.length + 1;
 
         const topTenList = topTen.map((entry, index) => {
             return (
