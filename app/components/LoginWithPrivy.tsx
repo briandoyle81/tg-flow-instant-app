@@ -4,7 +4,7 @@
 import { usePrivy } from '@privy-io/react-auth';
 
 export default function LoginWithPrivy() {
-    const { ready, authenticated, login, logout, user } = usePrivy();
+    const { ready, authenticated, login, logout, user, connectWallet } = usePrivy();
 
     if (!ready) return <p className="text-center text-gray-600">Loading...</p>;
 

@@ -11,9 +11,10 @@ type scoreBoardEntry = {
 
 interface TopTenDisplayProps {
     reloadScores: boolean;
+    setReloadScores: Function;
 }
 
-export default function TopTenDisplay({ reloadScores }: TopTenDisplayProps) {
+export default function TopTenDisplay({ reloadScores, setReloadScores }: TopTenDisplayProps) {
     const [scores, setScores] = useState<scoreBoardEntry[]>([]);
 
     const { clickToken } = useContracts();
@@ -43,7 +44,9 @@ export default function TopTenDisplay({ reloadScores }: TopTenDisplayProps) {
 
     useEffect(() => {
         if (reloadScores) {
+            console.log('Reloading scores...');
             queryClient.invalidateQueries({ queryKey: getAllScoresQueryKey });
+            setReloadScores(false);
         }
     }, [reloadScores]);
 

@@ -21,16 +21,15 @@ const privyConfig: PrivyClientConfig = {
     theme: 'light',
     accentColor: '#676FFF',
     logo: 'https://cryptologos.cc/logos/flow-flow-logo.png', // Replace with your logo
-    walletList: [], // Disable wallets to force Flow wallet as smart wallet and avoid infinite recursion bug
+    walletList: [], // Disable browser wallets to force Flow wallet as smart wallet and avoid infinite recursion bug
   },
   embeddedWallets: {
     createOnLogin: 'all-users',
   },
   loginMethodsAndOrder: {
-    primary: ['telegram', 'sms'],
+    primary: ['telegram', 'sms', 'email'],
   },
   // Flow EVM configuration
-  defaultChain: flowMainnet,
   supportedChains: [flowMainnet],
 }
 

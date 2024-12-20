@@ -12,18 +12,33 @@ export default function Content() {
 
     const { ready, authenticated, login, logout, user } = usePrivy();
     const account = useAccount();
-    const { data, writeContract } = useWriteContract();
+    const { data, writeContract, error: writeError } = useWriteContract();
 
-    const { data: receipt } = useWaitForTransactionReceipt({
+    const { data: receipt, error: receiptError } = useWaitForTransactionReceipt({
         hash: data,
     });
 
     useEffect(() => {
         if (receipt) {
+            console.log('Transaction receipt:', receipt);
             setReload(true);
             setAwaitingResponse(false);
         }
     }, [receipt]);
+
+    useEffect(() => {
+        if (writeError) {
+            console.error(writeError);
+            setAwaitingResponse(false);
+        }
+    }, [writeError]);
+
+    useEffect(() => {
+        if (receiptError) {
+            console.error(receiptError);
+            setAwaitingResponse(false);
+        }
+    }, [receiptError]);
 
     return (
         <div className="card gap-1">
@@ -37,7 +52,7 @@ export default function Content() {
                 </div>
             )}
             <br />
-            {<TopTenDisplay reloadScores={reload} />}
+            {<TopTenDisplay reloadScores={reload} setReloadScores={setReload} />}
         </div>
     );
 }
