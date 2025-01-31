@@ -4,7 +4,8 @@
 import { usePrivy } from '@privy-io/react-auth';
 
 export default function LoginWithPrivy() {
-    const { ready, authenticated, login, logout, user } = usePrivy();
+    const { ready, authenticated, connectOrCreateWallet, logout, user } = usePrivy();
+    const smartWallet = user?.linkedAccounts.find((account) => account.type === 'smart_wallet');
 
     if (!ready) return <p className="text-center text-gray-600">Loading...</p>;
 
@@ -36,6 +37,10 @@ export default function LoginWithPrivy() {
                         <span className="connected-username">
                             {user?.wallet?.address}
                         </span>
+                        Smart Wallet:{' '}
+                        <span className="connected-username">
+                            {smartWallet?.address}
+                        </span>
                     </p>
                     <button
                         onClick={logout}
@@ -51,7 +56,7 @@ export default function LoginWithPrivy() {
                         Connect with Privy to get started
                     </p>
                     <button
-                        onClick={login}
+                        onClick={connectOrCreateWallet}
                         className="button button-connect bg-green-500 text-white font-semibold w-full py-2 rounded-md hover:bg-green-600 transition"
                     >
                         Login with Privy
